@@ -165,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // On ground
-        if(grounded)
+        else if(grounded)
             rb.AddForce(movementDirection * moveSpeed * 10f, ForceMode.Force);
 
         // In air
