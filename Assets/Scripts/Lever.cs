@@ -18,6 +18,6 @@ public class Lever : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        //rotateRoomScript = gameObject.GetComponent<RotateRoom>();s
+        
     }
 }
