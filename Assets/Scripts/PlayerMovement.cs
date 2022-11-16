@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     public float walkSpeed;
     public float sprintSpeed;
+    public float rotationSpeed;
 
     
 
@@ -36,6 +37,10 @@ public class PlayerMovement : MonoBehaviour
     //private bool exitingSlope;
 
     public Transform orientation;
+
+    private float vertical;
+    private float horizontal;
+    private float rotateAround;
 
     float horizontalInput;
     float verticalInput;
@@ -79,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
+        
 
         // Handle drag
         if (grounded)
@@ -142,22 +148,40 @@ public class PlayerMovement : MonoBehaviour
         // Calculate movement direction;
         movementDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
+        vertical = Input.GetAxis("Vertical");
+        horizontal = Input.GetAxis("Horizontal");
+        rotateAround = Input.GetAxis("Mouse X");
+
         // On slope
         //if (OnSlope() && !exitingSlope)
         //{
-            //rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
+        //rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
 
-            //if (rb.velocity.y > 0)
-                //rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+        //if (rb.velocity.y > 0)
+        //rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         //}
 
         // On ground
-        if(grounded)
-            rb.AddForce(movementDirection * moveSpeed * 10f, ForceMode.Force);
+        if (grounded)
+        {
+            //rb.AddForce(movementDirection * moveSpeed * 10f, ForceMode.Force);
+            rb.velocity = (transform.forward * vertical) * moveSpeed;
+            rb.velocity = (transform.right * horizontal) * moveSpeed;
+            transform.Rotate((transform.up * rotateAround) * rotationSpeed * Time.deltaTime);
+
+
+        }
+
+
+
 
         // In air
-        else
-            rb.AddForce(movementDirection * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        //else
+        //{
+        //rb.AddForce(movementDirection * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        //rb.velocity = (movementDirection) * moveSpeed * airMultiplier;
+        //}
+
 
         // Turn gravity off on slope
         //rb.useGravity = !OnSlope();
@@ -175,14 +199,14 @@ public class PlayerMovement : MonoBehaviour
         // Limit speed on ground or in air
         //else
         //{
-            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            //Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
             // Limit Velocity if needed
-            if (flatVel.magnitude > moveSpeed)
-            {
-                Vector3 limitedVel = flatVel.normalized * moveSpeed;
-                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-            }
+            //if (flatVel.magnitude > moveSpeed)
+            //{
+                //Vector3 limitedVel = flatVel.normalized * moveSpeed;
+                //rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            //}
         //}
 
         

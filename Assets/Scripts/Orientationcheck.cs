@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class Orientationcheck : MonoBehaviour
 {
-    public float sensX;
-    public float sensY;
-    float xRotation = 400;
-    float yRotation = 400;
+    public Vector2 turn;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,13 +16,7 @@ public class Orientationcheck : MonoBehaviour
     {
         Debug.DrawRay(transform.position, -transform.up, Color.red, Time.deltaTime);
 
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
-
-        yRotation += mouseX;
-
-        xRotation -= mouseY;
-
-        transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        turn.y += Input.GetAxis("Mouse X");
+        transform.localRotation = Quaternion.Euler(0, turn.y, 0);
     }
 }

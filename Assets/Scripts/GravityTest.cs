@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GravityTest : MonoBehaviour
 {
-    public float rotateSPeed = 10f;
+    public float rotateSpeed = 10f;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,7 @@ public class GravityTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("Gravity change");
-            Physics.gravity = new Vector3(-9.8f, 0, 0);
+            Physics.gravity = new Vector3(-9.81f, 0, 0);
             transform.Rotate(0, 0, -90);
         }
         
