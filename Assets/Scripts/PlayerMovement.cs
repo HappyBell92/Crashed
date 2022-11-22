@@ -165,9 +165,10 @@ public class PlayerMovement : MonoBehaviour
         if (grounded)
         {
             //rb.AddForce(movementDirection * moveSpeed * 10f, ForceMode.Force);
-            rb.velocity = (transform.forward * vertical) * moveSpeed;
-            rb.velocity = (transform.right * horizontal) * moveSpeed;
-            transform.Rotate((transform.up * rotateAround) * rotationSpeed * Time.deltaTime);
+            //rb.velocity = (transform.forward * vertical) * moveSpeed;
+            rb.velocity = (movementDirection) * moveSpeed;
+            //rb.velocity = (transform.right * horizontal) * moveSpeed;
+            //transform.Rotate((transform.up * rotateAround) * rotationSpeed * Time.deltaTime);
 
 
         }
@@ -175,12 +176,13 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        // In air
-        //else
-        //{
-        //rb.AddForce(movementDirection * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-        //rb.velocity = (movementDirection) * moveSpeed * airMultiplier;
-        //}
+        //In air
+        else
+        {
+            //rb.AddForce(movementDirection * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            rb.velocity = (movementDirection) * moveSpeed * airMultiplier;
+            //transform.Rotate((transform.up * rotateAround) * rotationSpeed * Time.deltaTime);
+        }
 
 
         // Turn gravity off on slope
@@ -192,24 +194,24 @@ public class PlayerMovement : MonoBehaviour
         // Limit speed on slope
         //if (OnSlope() && !exitingSlope)
         //{
-            //if (rb.velocity.magnitude > moveSpeed)
-                //rb.velocity = rb.velocity.normalized * moveSpeed;
+        //if (rb.velocity.magnitude > moveSpeed)
+        //rb.velocity = rb.velocity.normalized * moveSpeed;
         //}
 
         // Limit speed on ground or in air
         //else
         //{
-            //Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-            // Limit Velocity if needed
-            //if (flatVel.magnitude > moveSpeed)
-            //{
-                //Vector3 limitedVel = flatVel.normalized * moveSpeed;
-                //rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-            //}
+        // Limit Velocity if needed
+        //if (flatVel.magnitude > moveSpeed)
+        //{
+        //    Vector3 limitedVel = flatVel.normalized * moveSpeed;
+        //    rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+        //}
         //}
 
-        
+
     }
 
     private void Jump()
