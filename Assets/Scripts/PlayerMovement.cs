@@ -36,6 +36,9 @@ public class PlayerMovement : MonoBehaviour
     //private RaycastHit slopeHit;
     //private bool exitingSlope;
 
+    public Camera playerCamera;
+    float maxVelocityChange = 10.0f;
+
     public Transform orientation;
 
     private float vertical;
@@ -162,27 +165,43 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         // On ground
-        if (grounded)
-        {
-            //rb.AddForce(movementDirection * moveSpeed * 10f, ForceMode.Force);
-            //rb.velocity = (transform.forward * vertical) * moveSpeed;
-            rb.velocity = (movementDirection) * moveSpeed;
-            //rb.velocity = (transform.right * horizontal) * moveSpeed;
-            //transform.Rotate((transform.up * rotateAround) * rotationSpeed * Time.deltaTime);
+        //if (grounded)
+        //{
+        //    //rb.addforce(movementdirection * movespeed * 10f, forcemode.force);
+        //    //rb.velocity = (transform.forward * vertical) * movespeed;
+        //    rb.velocity = (movementDirection) * moveSpeed;
+        //    //rb.velocity = (transform.right * horizontal) * movespeed;
+        //    //transform.rotate((transform.up * rotatearound) * rotationspeed * time.deltatime);
 
 
-        }
+        //}
 
+        Vector3 forwardDir = Vector3.Cross(transform.up, -playerCamera.transform.right).normalized;
+        Vector3 rightDir = Vector3.Cross(transform.up, playerCamera.transform.forward).normalized;
+        Vector3 targetVelocity = (forwardDir * Input.GetAxis("Vertical") + rightDir * Input.GetAxis("Horizontal")) * moveSpeed;
 
+        Vector3 velocity = transform.InverseTransformDirection(rb.velocity);
+        velocity.y = 0;
+        velocity = transform.TransformDirection(velocity);
+        Vector3 velocityChange = transform.InverseTransformDirection(targetVelocity - velocity);
+        velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+        velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+        velocityChange.y = 0;
+        velocityChange = transform.TransformDirection(velocityChange);
+
+        rb.AddForce(velocityChange, ForceMode.VelocityChange);
 
 
         //In air
-        else
-        {
-            //rb.AddForce(movementDirection * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-            rb.velocity = (movementDirection) * moveSpeed * airMultiplier;
-            //transform.Rotate((transform.up * rotateAround) * rotationSpeed * Time.deltaTime);
-        }
+        //else
+        //    {
+        //    //rb.AddForce(movementDirection * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        //    rb.velocity = (movementDirection) * moveSpeed * airMultiplier;
+        //    Vector3 v = rb.velocity;
+        //    v.y = -5f;
+        //    rb.velocity = v;
+        //    //transform.Rotate((transform.up * rotateAround) * rotationSpeed * Time.deltaTime);
+        //}
 
 
         // Turn gravity off on slope

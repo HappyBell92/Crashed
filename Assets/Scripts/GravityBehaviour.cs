@@ -4,29 +4,52 @@ using UnityEngine;
 
 public class GravityBehaviour : MonoBehaviour
 {
-    public Transform gravityPoint;
-    public bool alignToPlanet = true;
-
-    float gravityConstant = 9.8f;
-    Rigidbody r;
+    public GameObject player;
 
     void Start()
     {
-        r = GetComponent<Rigidbody>();
+
     }
 
-    void FixedUpdate()
+    public void GravityDown()
     {
-        Vector3 toCenter = gravityPoint.position - transform.position;
-        toCenter.Normalize();
+        Debug.Log("Gravity Down!");
+        Physics.gravity = new Vector3(0, -9.81f, 0);
+        player.transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
 
-        r.AddForce(toCenter * gravityConstant, ForceMode.Acceleration);
+    public void GravityUp()
+    {
+        Debug.Log("Gravity Up!");
+        Physics.gravity = new Vector3(0, 9.81f, 0);
+        player.transform.rotation = Quaternion.Euler(180, 0, 0);
+    }
 
-        if (alignToPlanet)
-        {
-            Quaternion q = Quaternion.FromToRotation(transform.up, -toCenter);
-            q = q * transform.rotation;
-            transform.rotation = Quaternion.Slerp(transform.rotation, q, 1);
-        }
+    public void GravityNorth()
+    {
+        Debug.Log("Gravity North!");
+        Physics.gravity = new Vector3(0, 0, 9.81f);
+        player.transform.rotation = Quaternion.Euler(-90, 0, 0);
+    }
+
+    public void GravityEast()
+    {
+        Debug.Log("Gravity East!");
+        Physics.gravity = new Vector3(9.81f, 0, 0);
+        player.transform.rotation = Quaternion.Euler(0, 0, 90);
+    }
+
+    public void GravitySouth()
+    {
+        Debug.Log("Gravity South!");
+        Physics.gravity = new Vector3(0, 0, -9.81f);
+        player.transform.rotation = Quaternion.Euler(90, 0, 0);
+    }
+
+    public void GravityWest()
+    {
+        Debug.Log("Gravity West!");
+        Physics.gravity = new Vector3(-9.81f, 0, 0);
+        player.transform.rotation = Quaternion.Euler(0, 0, -90);
     }
 }
